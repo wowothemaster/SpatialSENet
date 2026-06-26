@@ -1,0 +1,36 @@
+{
+  "num_gpus": 1,
+  "batch_size": 8,
+  "learning_rate": 0.1,
+  "adam_b1": 0.8,
+  "adam_b2": 0.99,
+  "lr_decay": 0.999,
+  "seed": 1234,
+
+  "num_noise_classes": 15,
+
+  "dense_channel": 32,
+  "compress_factor": 0.3,
+  "num_tsconformers": 1,
+  "beta": 2.0,
+
+  "n_heads": 1,
+  "dense_depth": 3,
+
+  "ffn_mult": 1.2,
+  "ffn_bidirectional": true,
+
+  "sampling_rate": 16000,
+  "segment_size": 32000,
+  "n_fft": 512,
+  "hop_size": 128,
+  "win_size": 512,
+
+  "num_workers": 4,
+
+  "dist_config": {
+    "dist_backend": "nccl",
+    "dist_url": "tcp://localhost:54301",
+    "world_size": 1
+  }
+}
