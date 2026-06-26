@@ -1,0 +1,72 @@
+network_config:
+  dim_input: 4
+  dim_output: 2
+  num_layers: 16
+  encoder_kernel_size: 5
+  dim_hidden: 128
+  dim_ffn: 192
+  num_heads: 4
+  dropout: [0, 0, 0]
+  kernel_size: (5, 3)
+  conv_groups: (8, 8)
+  norms: ("LN", "LN", "GN", "LN", "LN", "LN")
+  dim_squeeze: 8
+  num_freqs: 257
+  full_share: 0
+
+DDP:
+  world_size: 2
+
+optimizer:
+  lr: 0.001
+
+scheduler:
+  kwargs:
+    warmup_steps: 25000
+    decay_until_step: 250000
+    max_lr: 1e-3
+    min_lr: 1e-6
+
+  update_interval: step  # [step, epoch]
+
+FFT:
+  n_fft: 512
+  n_hop: 256
+  win_len: 512
+
+loss:
+  type: ["stft_mse", "mag_mse", "phase_loss", "neg_si_sdr"]
+  weight: [0.7, 0.3, 0.2, 0.0002]
+
+train_dataset: 
+  clean_scp: /home/iasp_guest1/tzx/code/SpatialNet/SPCUP/ckpt/dataset/direct/train.scp
+  noisy_scp: /home/iasp_guest1/tzx/code/SpatialNet/SPCUP/ckpt/dataset/noisy/train.scp
+  fs: 16000
+  length: 2
+  cut_audio: False
+
+train_dataloader: 
+  batch_size: 1
+  num_workers: 4
+  drop_last: True
+  pin_memory: True
+
+validation_dataset: 
+  clean_scp: /home/iasp_guest1/tzx/code/SpatialNet/SPCUP/ckpt/dataset/direct/vad.scp
+  noisy_scp: /home/iasp_guest1/tzx/code/SpatialNet/SPCUP/ckpt/dataset/noisy/vad.scp
+  fs: 16000
+  length: 2
+  cut_audio: False
+
+validation_dataloader:
+  batch_size: 1
+  num_workers: 4
+  pin_memory: True
+
+samplerate: 16000
+
+trainer:
+  epochs: 200
+  save_checkpoint_interval: 1
+  clip_grad_norm_value: 3.0
+  exp_path: /home/iasp_guest1/tyx/spatialnet/fullembeddeddeeperchangedloss/ckpt
